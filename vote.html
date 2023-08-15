@@ -132,26 +132,7 @@
                         optionsContainer3.children[index].style.display = 'none';
                         optionsContainer4.children[index].style.display = 'none';
                     }
-                    function openResultsPopup() {
-    if (!resultsPopup || resultsPopup.closed) {
-        // ... existing code ...
-        
-        // Hide options with the maximum number of votes
-        for (let i = 0; i < numOptions; i++) {
-            if (votes[i] === maxVotes) {
-                optionsContainer1.children[i].style.display = 'none';
-                optionsContainer2.children[i].style.display = 'none';
-                optionsContainer3.children[i].style.display = 'none';
-                optionsContainer4.children[i].style.display = 'none';
-            }
-        }
-
-        // ... existing code ...
-    } else {
-        resultsPopup.focus(); // Focus the existing popup if it's open
-    }
-}
-         });
+                });
                 
                 // Find the maximum number of votes
                 const maxVotes = Math.max(...votes);
@@ -166,7 +147,13 @@
                     }
                 }
             } else {
-                resultsPopup.focus(); // Focus the existing popup if it's open
+                // Reset hidden options when closing the popup
+                optionsContainer1.style.display = 'grid';
+                optionsContainer2.style.display = 'grid';
+                optionsContainer3.style.display = 'grid';
+                optionsContainer4.style.display = 'grid';
+
+                resultsPopup.close(); // Close the popup
             }
         }
     </script>
