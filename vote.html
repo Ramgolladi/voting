@@ -60,7 +60,14 @@
 
     <div class="results">
         <h2>Results:</h2>
-        <button id="viewResultsBtn" onclick="openResultsPopup()">View Results</button>
+        <button id="viewResultsBtn" onclick="promptPassword()">View Results</button>
+    </div>
+
+    <!-- Password form -->
+    <div id="passwordForm" style="display: none;">
+        <h2>Enter Password to View Results:</h2>
+        <input type="password" id="passwordInput">
+        <button onclick="checkPassword()">Submit</button>
     </div>
 
     <script>
@@ -154,6 +161,22 @@
                 optionsContainer4.style.display = 'grid';
 
                 resultsPopup.close(); // Close the popup
+            }
+        }
+
+        function promptPassword() {
+            document.getElementById("passwordForm").style.display = "block";
+        }
+
+        function checkPassword() {
+            const password = "your_encrypted_password"; // Replace with the actual encrypted password
+            const enteredPassword = document.getElementById("passwordInput").value;
+
+            if (enteredPassword === password) {
+                openResultsPopup();
+                document.getElementById("passwordForm").style.display = "none";
+            } else {
+                alert("Incorrect password. Please try again.");
             }
         }
     </script>
