@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote for Your Favorite Option</title>
+    <style>
+        body {
+            background: url('e.webp?b=1&s=170667a&w=0&k=20&c=ow0sXmSb-jUl0ctKP3davkVvQ_bDQEwmPa-2NJFGILs=') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ... existing styles ... */
+        /* Add a class to style the clicked button */
+        .options input[type="radio"]:checked + label {
+            background-color: blue;
+            color: white;
+        }
+
+        /* Style the header */
+        h1 {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Style the container to fit options in 4 columns */
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vote for Your Favorite Option</h1>
+    
+    <div class="options">
+        <h2>Telugu:</h2>
+        <div class="options-container" id="optionsContainer1"></div>
+    </div>
+    
+    <div class="options">
+        <h2>Tamil:</h2>
+        <div class="options-container" id="optionsContainer2"></div>
+    </div>
+    
+    <div class="options">
+        <h2>Malayalam:</h2>
+        <div class="options-container" id="optionsContainer3"></div>
+    </div>
+
+    <div class="options">
+        <h2>Kannada:</h2>
+        <div class="options-container" id="optionsContainer4"></div>
+    </div>
+
+    <div class="results">
+        <h2>Results:</h2>
+        <button id="viewResultsBtn" onclick="openResultsPopup()">View Results</button>
+    </div>
+
+    <script>
+        let numOptions = 50;
+        let optionsPerGroup = [15, 15, 10, 10]; // Adjust optionsPerGroup accordingly
+        let votes = new Array(numOptions).fill(0);
+        let clickedOptions = new Array(numOptions).fill(false);
+        let resultsPopup = null; // Declare the popup variable globally
+
+        const optionsContainer1 = document.getElementById("optionsContainer1");
+        const optionsContainer2 = document.getElementById("optionsContainer2");
+        const optionsContainer3 = document.getElementById("optionsContainer3");
+        const optionsContainer4 = document.getElementById("optionsContainer4");
+
+        for (let i = 0; i < numOptions; i++) {
+            const radioInput = document.createElement("input");
+            radioInput.type = "radio";
+            radioInput.id = `option${i + 1}`;
+            radioInput.name = "optionGroup"; // Make sure to assign the same name to create radio button groups
+            radioInput.addEventListener("click", createClickHandler(i));
+
+            const label = document.createElement("label");
+            label.textContent = `Option ${i + 1}`;
+            label.setAttribute("for", `option${i + 1}`);
+            
+            const radioDiv = document.createElement("div");
+            radioDiv.appendChild(radioInput);
+            radioDiv.appendChild(label);
+
+            if (i < optionsPerGroup[0]) {
+                optionsContainer1.appendChild(radioDiv);
+            } else if (i < optionsPerGroup[0] + optionsPerGroup[1]) {
+                optionsContainer2.appendChild(radioDiv);
+            } else if (i < optionsPerGroup[0] + optionsPerGroup[1] + optionsPerGroup[2]) {
+                optionsContainer3.appendChild(radioDiv);
+            } else {
+                optionsContainer4.appendChild(radioDiv);
+            }
+        }
+
+        function createClickHandler(index) {
+            return function() {
+                if (!clickedOptions[index]) {
+                    clickedOptions[index] = true;
+                    votes[index]++;
+                    updateResults();
+                }
+            };
+        }
+
+        function updateResults() {
+            for (let i = 0; i < numOptions; i++) {
+                document.getElementById(`votesOption${i}`).textContent = votes[i];
+            }
+        }
+
+        function openResultsPopup() {
+            if (!resultsPopup || resultsPopup.closed) {
+                resultsPopup = window.open('', '_blank', 'width=400,height=400,scrollbars=yes');
+                resultsPopup.document.write('<h1>Results</h1>');
+                for (let i = 0; i < numOptions; i++) {
+                    resultsPopup.document.write(`Option ${i + 1}: ${votes[i]}<br>`);
+                }
+                resultsPopup.document.write('<p>Note: The clicked option(s) will disappear from the list.</p>');
+                clickedOptions.forEach((clicked, index) => {
+                    if (clicked) {
+                        optionsContainer1.children[index].style.display = 'none';
+                        optionsContainer2.children[index].style.display = 'none';
+                        optionsContainer3.children[index].style.display = 'none';
+                        optionsContainer4.children[index].style.display = 'none';
+                    }
+                    function openResultsPopup() {
+    if (!resultsPopup || resultsPopup.closed) {
+        // ... existing code ...
+        
+        // Hide options with the maximum number of votes
+        for (let i = 0; i < numOptions; i++) {
+            if (votes[i] === maxVotes) {
+                optionsContainer1.children[i].style.display = 'none';
+                optionsContainer2.children[i].style.display = 'none';
+                optionsContainer3.children[i].style.display = 'none';
+                optionsContainer4.children[i].style.display = 'none';
+            }
+        }
+
+        // ... existing code ...
+    } else {
+        resultsPopup.focus(); // Focus the existing popup if it's open
+    }
+}
+         });
+                
+                // Find the maximum number of votes
+                const maxVotes = Math.max(...votes);
+
+                // Disable options with the maximum number of votes
+                for (let i = 0; i < numOptions; i++) {
+                    if (votes[i] === maxVotes) {
+                        optionsContainer1.children[i].querySelector('input').disabled = true;
+                        optionsContainer2.children[i].querySelector('input').disabled = true;
+                        optionsContainer3.children[i].querySelector('input').disabled = true;
+                        optionsContainer4.children[i].querySelector('input').disabled = true;
+                    }
+                }
+            } else {
+                resultsPopup.focus(); // Focus the existing popup if it's open
+            }
+        }
+    </script>
+</body>
+</html>
